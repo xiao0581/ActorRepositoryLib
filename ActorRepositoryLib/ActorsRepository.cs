@@ -11,79 +11,82 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ActorRepositoryLib
 {
-    public class ActorsRepository
+    public class ActorsRepository : IActorsRepository
     {
         public int _nextId = 5;
-       
+
         public List<Actor> actors = new(){
         new Actor(){Id=1,Name="michel",BirthYear=1998},
         new Actor(){Id=2,Name="xiao",BirthYear=1988},
         new Actor(){Id=3,Name="alex",BirthYear=2001},
         new Actor(){Id=4,Name="anders",BirthYear=1999}
         };
-        
+
         public List<Actor> Get()
         {
             return new List<Actor>(actors);
         }
-       public Actor? GetById(int id) {  
-            return actors.Find(actor => actor.Id == id); 
-        }
-      
-        public List<Actor> Get(int birthdayBeforce=0,int birthdayAfter =0,string sortBy=null)
+        public Actor? GetById(int id)
         {
-            List<Actor> sortActor = new List<Actor>(actors);
+            return actors.Find(actor => actor.Id == id);
+        }
+
+        public IEnumerable<Actor> Get(int birthdayBeforce = 0, int birthdayAfter = 0, string? sortBy = null)
+        {
+            IEnumerable<Actor> sortActor = new List<Actor>(actors);
             if (birthdayBeforce != 0)
             {
-                return sortActor.FindAll(b => b.BirthYear < birthdayBeforce);
+                return sortActor.Where(b => b.BirthYear < birthdayBeforce);
             }
-            else if(birthdayAfter != 0)
+            else if (birthdayAfter != 0)
             {
-                return sortActor.FindAll(b => b.BirthYear > birthdayBeforce);
+                return sortActor.Where(b => b.BirthYear > birthdayBeforce);
             }
             switch (sortBy)
             {
                 case "Id":
-                    sortActor.Sort((a1,a2)=> a1.Id-a2.Id);
+                    sortActor.OrderBy(m=>m.Id);
                     break;
                 case "name":
-                    sortActor.Sort((a1, a2) => a1.Name.CompareTo(a2.Name));
+                    sortActor.OrderBy(m =>m.Name);
                     break;
 
 
             }
             return sortActor;
-        }   
+        }
 
         public Actor Add(Actor actor)
         {
-             actor.Id = _nextId++;
-             actors.Add(actor);
+            actor.validateName();
+            actor.Id = _nextId++;
+            actors.Add(actor);
             return actor;
         }
-        public Actor Delete(int id) { 
-        
-           Actor? actor = actors.Find(actor=>actor.Id == id);
+        public Actor? Delete(int id)
+        {
+
+            Actor? actor = actors.Find(actor => actor.Id == id);
             if (actor != null)
             {
                 actors.Remove(actor);
             }
             return actor;
-        
+
         }
-        public Actor Update(int id,Actor data)
+        public Actor? Update(int id, Actor data)
         {
             Actor? updateActor = actors.Find(actor => actor.Id == id);
             if (updateActor != null)
             {
-                updateActor.Name=data.Name;
-                updateActor.BirthYear=data.BirthYear;
+                updateActor.Name = data.Name;
+                updateActor.BirthYear = data.BirthYear;
             }
             return updateActor;
         }
         public override string ToString()
         {
-            return string.Join("\n ", actors); 
+            return string.Join("\n ", actors);
         }
     }
 }

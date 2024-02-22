@@ -19,26 +19,26 @@ namespace ActorRepositoryLib.Tests
             List<Actor> actors= repository.Get();
             Assert.IsNotNull(actors);
             Assert.AreEqual(4, actors.Count);
-           
+
             //birthdayBeforce Test
-            List<Actor> birthdayBeforce = repository.Get(birthdayBeforce:1990);
+            IEnumerable<Actor> birthdayBeforce = repository.Get(birthdayBeforce:1990);
               Assert.IsNotNull(birthdayBeforce);
-              Assert.AreEqual(1988, birthdayBeforce[0].BirthYear);
-           
+              Assert.AreEqual(1988,birthdayBeforce.First().BirthYear);
+
             //birthdayAfter Test
-            List<Actor> birthdayAfter = repository.Get(birthdayAfter: 1990);
+            IEnumerable<Actor> birthdayAfter = repository.Get(birthdayAfter: 1990);
             Assert.IsNotNull(birthdayAfter);
-            Assert.AreEqual(1998, birthdayAfter[0].BirthYear);
-           
+            Assert.AreEqual(1998, birthdayAfter.First().BirthYear);
+
             //sortByName test
-            List<Actor> sortByName = repository.Get(sortBy:"name") ;
+            IEnumerable<Actor> sortByName = repository.Get(sortBy:"name") ;
             Assert.IsNotNull (sortByName);
-            Assert.AreEqual("alex", sortByName[0].Name);
-           
+            Assert.AreEqual("alex", sortByName.First().Name);
+
             //sortById
-            List<Actor> sortById = repository.Get(sortBy: "Id");
+            IEnumerable<Actor> sortById = repository.Get(sortBy: "Id");
             Assert.IsNotNull(sortById);
-            Assert.AreEqual(1, sortById[0].Id);
+            Assert.AreEqual(1, sortById.First().Id);
 
         }
         [TestMethod()]
@@ -84,7 +84,7 @@ namespace ActorRepositoryLib.Tests
                 Name = "xiao",
                 BirthYear = 1999
             };
-            Actor actor2 =a1.Update(1, a2);
+            Actor? actor2 =a1.Update(1, a2);
             Assert.AreEqual(a2.Name, actor2.Name);
 
         }
