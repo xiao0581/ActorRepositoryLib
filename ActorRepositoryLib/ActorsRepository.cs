@@ -31,24 +31,24 @@ namespace ActorRepositoryLib
             return actors.Find(actor => actor.Id == id);
         }
 
-        public IEnumerable<Actor> Get(int birthdayBeforce = 0, int birthdayAfter = 0, string? sortBy = null)
+        public IEnumerable<Actor> Get(int? birthdayBeforce = null, int? birthdayAfter = null, string? sortBy = null)
         {
             IEnumerable<Actor> sortActor = new List<Actor>(actors);
-            if (birthdayBeforce != 0)
+            if (birthdayBeforce != null)
             {
-                return sortActor.Where(b => b.BirthYear < birthdayBeforce);
+                sortActor= sortActor.Where(b => b.BirthYear < birthdayBeforce);
             }
-            else if (birthdayAfter != 0)
+            if (birthdayAfter != null)
             {
-                return sortActor.Where(b => b.BirthYear > birthdayBeforce);
+                sortActor= sortActor.Where(b => b.BirthYear > birthdayAfter);
             }
             switch (sortBy)
             {
                 case "Id":
-                    sortActor.OrderBy(m=>m.Id);
+                   sortActor= sortActor.OrderBy(m=>m.Id);
                     break;
                 case "name":
-                    sortActor.OrderBy(m =>m.Name);
+                    sortActor = sortActor.OrderBy(m =>m.Name);
                     break;
 
 
@@ -58,10 +58,13 @@ namespace ActorRepositoryLib
 
         public Actor Add(Actor actor)
         {
+
             actor.validateName();
+            actor.validateBirthYear();
             actor.Id = _nextId++;
             actors.Add(actor);
             return actor;
+
         }
         public Actor? Delete(int id)
         {

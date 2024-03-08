@@ -15,10 +15,10 @@ namespace ActorRepositoryLib.Tests
         public void GetTest()
         {
           ActorsRepository repository = new ActorsRepository();
-           // Getall Test
-            List<Actor> actors= repository.Get();
+            // Getall Test
+            IEnumerable<Actor> actors = repository.Get();
             Assert.IsNotNull(actors);
-            Assert.AreEqual(4, actors.Count);
+            Assert.AreEqual(4, actors.Count());
 
             //birthdayBeforce Test
             IEnumerable<Actor> birthdayBeforce = repository.Get(birthdayBeforce:1990);
@@ -26,13 +26,13 @@ namespace ActorRepositoryLib.Tests
               Assert.AreEqual(1988,birthdayBeforce.First().BirthYear);
 
             //birthdayAfter Test
-            IEnumerable<Actor> birthdayAfter = repository.Get(birthdayAfter: 1990);
-            Assert.IsNotNull(birthdayAfter);
-            Assert.AreEqual(1998, birthdayAfter.First().BirthYear);
+            IEnumerable<Actor> birthdayAfter1 = repository.Get(birthdayAfter: 1990);
+            Assert.IsNotNull(birthdayAfter1);
+            Assert.AreEqual(1998, birthdayAfter1.First().BirthYear);
 
             //sortByName test
-            IEnumerable<Actor> sortByName = repository.Get(sortBy:"name") ;
-            Assert.IsNotNull (sortByName);
+            IEnumerable<Actor> sortByName = repository.Get(sortBy: "name");
+            Assert.IsNotNull(sortByName);
             Assert.AreEqual("alex", sortByName.First().Name);
 
             //sortById

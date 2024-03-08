@@ -22,7 +22,7 @@ namespace ActorRepositoryLib
             {
                 throw new ArgumentNullException("name is null");
             }
-            if (Name.Length <= 4)
+            if (Name.Length <= 1)
             {
                 throw new ArgumentException("name has to be at least one character ");
             }
@@ -36,6 +36,8 @@ namespace ActorRepositoryLib
             }
 
         }
+
+      
 
         public override string ToString() =>
             $"{Id},{Name},{BirthYear}";

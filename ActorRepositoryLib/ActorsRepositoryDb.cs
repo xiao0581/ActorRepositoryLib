@@ -11,14 +11,17 @@ namespace ActorRepositoryLib
         private readonly ActorDbContext _context;
         public ActorsRepositoryDb(ActorDbContext context)
         {
-            _context = context;
+            _context = context; 
         }
         public Actor Add(Actor actor)
         {
-           
-          _context.Actors.Add(actor);
+           actor.Id = 0;
+            _context.Actors.Add(actor);
             _context.SaveChanges();
             return actor;
+          //_context.Actors.Add(actor);
+          //  _context.SaveChanges();
+          //  return actor;
         }
 
         public Actor? Delete(int id)
@@ -38,16 +41,16 @@ namespace ActorRepositoryLib
              return new List<Actor>(_context.Actors);
         }
 
-        public IEnumerable<Actor> Get(int birthdayBeforce = 0, int birthdayAfter = 0, string? sortBy = null)
+        public IEnumerable<Actor> Get(int? birthdayBeforce = null, int? birthdayAfter = null, string? sortBy = null)
         {
             IQueryable<Actor> queryable = _context.Actors.AsQueryable();
-            if (birthdayBeforce != 0)
+            if (birthdayBeforce != null)
             {
                 queryable=queryable.Where(b => b.BirthYear < birthdayBeforce);
             }
-            if (birthdayAfter != 0)
+            if (birthdayAfter != null)
             {
-                queryable=queryable.Where(a => a.BirthYear >= birthdayAfter);
+                queryable=queryable.Where(a => a.BirthYear > birthdayAfter);
             }
             if( sortBy != null)
                                {
